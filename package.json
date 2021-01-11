@@ -1,7 +1,7 @@
 {
   "name": "flutter-services",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "./src/index.js",
   "repository": "https://github.com/bridgedxyz/flutter-services.git",
   "author": "bridged.xyz authors",
   "license": "MIT",
@@ -11,6 +11,8 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@bazel/worker": "^3.0.0",
+    "express": "^4.17.1",
+    "winston": "^3.3.3"
   }
 }

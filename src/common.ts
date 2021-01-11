@@ -1,8 +1,10 @@
+import assert from 'assert';
+import { DART_VM_VERSION } from './dart-vm';
 
-const kMainDart = 'main.dart';
-const kBootstrapDart = 'bootstrap.dart';
+export const kMainDart = 'main.dart';
+export const kBootstrapDart = 'bootstrap.dart';
 
-const kBootstrapFlutterCode = `
+export const kBootstrapFlutterCode = `
 import 'dart:ui' as ui;
 import 'main.dart' as user_code;
 
@@ -12,7 +14,7 @@ void main() async {
 }
 `;
 
-const kBootstrapDartCode = `
+export const kBootstrapDartCode = `
 import 'main.dart' as user_code;
 
 void main() {
@@ -20,13 +22,13 @@ void main() {
 }
 `;
 
-const sampleCode = `
+export const sampleCode = `
 void main() {
   print("hello");
 }
 `;
 
-const sampleCodeWeb = `
+export const sampleCodeWeb = `
 import 'dart:html';
 
 void main() {
@@ -35,7 +37,7 @@ void main() {
 }
 `;
 
-const sampleCodeFlutter = `
+export const sampleCodeFlutter = `
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -58,7 +60,7 @@ void main() async {
 `;
 
 // From https://gist.github.com/johnpryan/b6409e10de32b280b8938aa75364fa7b
-const sampleCodeFlutterCounter = `
+export const sampleCodeFlutterCounter = `
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -126,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
 `;
 
 // From https://gist.github.com/johnpryan/b3ccb26497ac84895540185935ed5825
-const sampleCodeFlutterSunflower = `
+export const sampleCodeFlutterSunflower = `
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -266,7 +268,7 @@ class _SunflowerState extends State<Sunflower> {
 `;
 
 // From https://gist.github.com/RedBrogdon/ecb28c29c646b7f38139b1e7f44129b7
-const sampleCodeFlutterDraggableCard = `
+export const sampleCodeFlutterDraggableCard = `
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -381,7 +383,7 @@ class _DraggableCardState extends State<DraggableCard>
 `;
 
 // From https://gist.github.com/RedBrogdon/40308e0a5f47acba46ba62f4d8be2bf4
-const sampleCodeFlutterImplicitAnimations = `
+export const sampleCodeFlutterImplicitAnimations = `
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -486,7 +488,7 @@ class _VariousDiscsState extends State<VariousDiscs> {
 }
 `;
 
-const sampleCodeMultiFoo = `
+export const sampleCodeMultiFoo = `
 import 'bar.dart';
 
 void main() {
@@ -494,13 +496,13 @@ void main() {
 }
 `;
 
-const sampleCodeMultiBar = `
+export const sampleCodeMultiBar = `
 bar() {
   return 4;
 }
 `;
 
-const sampleCodeAsync = `
+export const sampleCodeAsync = `
 import 'dart:html';
 
 main() async {
@@ -511,13 +513,13 @@ main() async {
 }
 `;
 
-const sampleCodeError = `
+export const sampleCodeError = `
 void main() {
   print("hello")
 }
 `;
 
-const sampleCodeErrors = `
+export const sampleCodeErrors = `
 void main() {
   print1("hello");
   print2("hello");
@@ -525,7 +527,7 @@ void main() {
 }
 `;
 
-const sampleStrongError = `
+export const sampleStrongError = `
 void main() {
   foo('whoops');
 }
@@ -535,7 +537,7 @@ void foo(int i) {
 }
 `;
 
-const sampleDart2Error = `
+export const sampleDart2Error = `
 class Foo {
   final bool isAlwaysNull;
   Foo(this.isAlwaysNull) {}
@@ -548,41 +550,50 @@ void main(List<String> argv) {
 }
 `;
 
-// class Lines {
-//   readonly Arr<int> _starts = <number>[];
+export class Lines {
+  readonly _starts: Array<number> = [];
 
-//   Lines(String source) {
-//     final units = source.codeUnits;
-//     for (var i = 0; i < units.length; i++) {
-//       if (units[i] == 10) _starts.add(i);
-//     }
-//   }
+  constructor(source: string) {
+    /// the origin dart code
+    ///    final units = source.codeUnits;
+    ///for (var i = 0; i < units.length; i++) {
+    ///if (units[i] == 10) _starts.add(i);
+    ///}
 
-//   /// Return the 0-based line number.
-//   int getLineForOffset(int offset) {
-//     assert(offset != null);
-//     for (var i = 0; i < _starts.length; i++) {
-//       if (offset <= _starts[i]) return i;
-//     }
-//     return _starts.length;
-//   }
-// }
+    const units = source;
+    for (var i = 0; i < units.length; i++) {
+      if (units.codePointAt(i) == 10) this._starts.push(i);
+    }
+  }
 
-// /// Returns the version of the current Dart runtime.
-// ///
-// /// The returned `String` is formatted as the [semver](http://semver.org) version
-// /// string of the current Dart runtime, possibly followed by whitespace and other
-// /// version and build details.
-// String get vmVersion => Platform.version;
+  /// Return the 0-based line number.
+  getLineForOffset(offset: number): number {
+    assert(offset != null);
+    for (var i = 0; i < this._starts.length; i++) {
+      if (offset <= this._starts[i]) return i;
+    }
+    return this._starts.length;
+  }
+}
 
-// /// If [str] has leading and trailing quotes, remove them.
-// String stripMatchingQuotes(String str) {
-//   if (str.length <= 1) return str;
+/// Returns the version of the current Dart runtime.
+///
+/// The returned `String` is formatted as the [semver](http://semver.org) version
+/// string of the current Dart runtime, possibly followed by whitespace and other
+/// version and build details.
 
-//   if (str.startsWith("'") && str.endsWith("'")) {
-//     str = str.substring(1, str.length - 1);
-//   } else if (str.startsWith('"') && str.endsWith('"')) {
-//     str = str.substring(1, str.length - 1);
-//   }
-//   return str;
-// }
+export function vmVersion(): string {
+  return DART_VM_VERSION;
+}
+
+/// If [str] has leading and trailing quotes, remove them.
+export function stripMatchingQuotes(str: string): string {
+  if (str.length <= 1) return str;
+
+  if (str.startsWith("'") && str.endsWith("'")) {
+    str = str.substring(1, str.length - 1);
+  } else if (str.startsWith('"') && str.endsWith('"')) {
+    str = str.substring(1, str.length - 1);
+  }
+  return str;
+}
